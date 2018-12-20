@@ -1,0 +1,41 @@
+import urllib.request
+import urllib.parse
+import os
+import time
+
+def openwifi():
+    os.system('netsh wlan connect name=i-NUIST')
+    time.sleep(1)
+    
+def denglv():
+    name={
+        'username':'02502271474',
+        'domain':'Unicom',
+        'password':'MTEwNjA2',
+        'enablemacauth':'0'
+        }
+    name=urllib.parse.urlencode(name).encode('utf-8')
+    
+
+
+
+    headers1={
+       'Accept': 'application/json, text/javascript, */*; q=0.01',
+	'Accept-Encoding': 'gzip, deflate',
+	'Accept-Language': 'zh-CN',
+	'Connection': 'Keep-Alive',
+	'Host': 'a.nuist.edu.cn',
+	'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko Core/1.63.6788.400 QQBrowser/10.3.2767.400'
+       }
+    req=urllib.request.Request('http://a.nuist.edu.cn/index.php/index/login',data=name,headers=headers1)
+    response=urllib.request.urlopen(req)
+    html=response.read().decode('unicode-escape')
+    print(html)
+
+def main():
+    openwifi()
+    denglv()
+
+main()
+        
+
