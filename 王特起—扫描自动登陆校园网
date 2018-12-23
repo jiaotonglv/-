@@ -1,0 +1,79 @@
+import time
+import requests
+import re
+import os
+class Login:
+ def openwifi(self):
+   os.system('netsh wlan connect name="i-NUIST"')
+   time.sleep(self.every)
+ def killtask(self):
+   os.system('taskkill /F /IM MicrosoftEdge.exe')
+   print("关闭浏览器")
+ def __init__(self):
+  self.every = 1
+ def login(self):
+   print("已连接网络，进行验证")
+   url="http://a.nuist.edu.cn/index.php/index/login"
+   header={
+   'Accept':"application/json, text/javascript, */*; q=0.01",  
+   'Accept-Encoding':"gzip, deflate",
+   'Accept-Language':"zh-Hans-CN, zh-Hans; q=0.5",
+   'Cache-Control':"no-cache",
+   'Connection':"Keep-Alive",
+   'Content-Length':"66",
+   'Content-Type':"application/x-www-form-urlencoded",
+   'Cookie':"PHPSESSID=jts1qdnq3bb4nfsln1jcd0num5; think_language=zh-Hans-CN; sunrisePassword=666999; sunriseRememberPassword=true; sunriseDomain=CMCC; sunriseUsername=18362086320",
+   'Host':"a.nuist.edu.cn",
+   'Origin':"http://a.nuist.edu.cn",
+   'Referer':"http://a.nuist.edu.cn/index.php?url=aHR0cDovL3d3dy5tc2Z0Y29ubmVjdHRlc3QuY29tL3JlZGlyZWN0",
+   'User-Agent':"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134",
+   'X-Requested-With':"XMLHttpRequest" 
+   }
+   payload={
+   'domain':'CMCC',
+   'enablemacauth':'0',
+   'password':' NjY2OTk5',
+   'username':'18362086320'
+   }
+   try: 
+    requests.post(url,headers=header,data=payload)
+    print("验证完成，实时检测中")
+    self.killtask()
+   except:
+    print("error1")
+ def Connect(self):
+  try:
+    q=requests.get("https://hao.360.cn/?z1002",timeout=5)
+    m=re.search('360导航_新一代安全上网导航',q.text)
+    if m:
+     return True
+     
+    else:
+     return False
+  except:
+   print ('error2')
+   self.openwifi()
+   return False 
+
+ def main(self):
+  print("欢迎使用自动连网系统")
+  
+  while True:
+   self.openwifi() 
+   self.login()
+   
+   while True:
+     can_connect = self.Connect()
+     
+     if not can_connect:
+      print("网络连接中断")
+      self.login()
+      
+     else:
+         print("网络连接正常")
+         
+     time.sleep(self.every)
+   
+    
+login = Login()
+login.main()
